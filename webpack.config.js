@@ -1,16 +1,20 @@
 const path = require("path");
 
 module.exports = {
-	entry: "./src/main.js",
+	entry: "./src/main.ts",
 	output: {
 		path: path.join(__dirname, "dist"),
 		filename: "dashboard.js"
 	},
+  resolve: {
+		extensions: ['','.ts','.js','.json','.css','.html']
+  },
+	devtool: 'source-map',
 	module: {
 		loaders: [{
-			test: /\.js$/,
+			test: /\.ts$/,
 			exclude: /node_modules/,
-			loader: "babel-loader"
+			loader: "ts-loader"
 		}]
 	}
 };
