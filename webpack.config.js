@@ -6,15 +6,19 @@ module.exports = {
 		path: path.join(__dirname, "dist"),
 		filename: "dashboard.js"
 	},
-  resolve: {
-		extensions: ['','.ts','.js','.json','.css','.html']
-  },
+	resolve: {
+		extensions: ['', '.ts', '.js', '.json', '.css', '.html']
+	},
 	devtool: 'source-map',
 	module: {
 		loaders: [{
-			test: /\.ts$/,
-			exclude: /node_modules/,
-			loader: "ts-loader"
-		}]
+				test: /\.ts$/,
+				exclude: /node_modules/,
+				loader: "ts-loader"
+			}, {
+				test: /\.html$/,
+				loader: 'raw-loader'
+			}
+		]
 	}
 };

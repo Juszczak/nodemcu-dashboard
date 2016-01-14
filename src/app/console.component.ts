@@ -14,33 +14,55 @@ import {
 	directives: [
 	],
 	selector: 'console',
-	template: `
-		<div class="log">
-			<div *ngFor="#command of commands">
-				{{command}}
-			</div>
-		</div>
-		<form [ngFormModel]="commandPrompt" (submit)="inputCommand($event)">
-			<label>&gt;
-				<input [(ngModel)]="currentCommand" ngControl="command" type="text" placeholder="">
-			</label>
-		</form>
-	`
+	template: require('./console.template.html')
 })
 export class ConsoleComponent {
-	@Output() private eventEmitter: EventEmitter<String> = new EventEmitter();
+	@Output() private eventEmitter: EventEmitter<string> = new EventEmitter();
 	private commandPrompt: ControlGroup;
-	private commands: Array<String> = new Array<String>();
-	private currentCommand: String = "";
+	private commands: Array<string> = new Array<string>();
+	private currentCommand: string = "";
 	constructor(formBuilder: FormBuilder) {
 		this.commandPrompt = formBuilder.group({
 			command: ["", Validators.required]
 		});
 	}
+	private sendCurrentCommand(): void {
+		// @todo
+		console.debug(this.currentCommand);
+	}
 	private inputCommand(event: Event): void {
 		event.preventDefault();
-		let commandString: String = this.commandPrompt.value.command;
+		let commandString: string = this.commandPrompt.value.command;
+		this.sendCurrentCommand();
 		this.commands.push(commandString);
 		this.currentCommand = "";
+	}
+	private applyPreviousCommand(): void {
+		let currentCommandIndex: number = this.commands.indexOf(this.currentCommand);
+		if (currentCommandIndex < 0) {
+			currentCommandIndex = this.commands.length;
+		}
+		const previousCommand = this.commands[currentCommandIndex - 1];
+		this.currentCommand = previousCommand;
+	}
+	private applyNextCommand(): void {
+		let currentCommandIndex: number = this.commands.indexOf(this.currentCommand);
+		const previousCommand = this.commands[currentCommandIndex + 1];
+		this.currentCommand = previousCommand;
+	}
+	private onKeyDown(event: KeyboardEvent, input: HTMLInputElement): void {
+		const keyCode: number = event.keyCode;
+		switch (keyCode) {
+			case 9: // tab
+				// @todo: completions
+				event.preventDefault();
+			break;
+			case 38: // up
+				this.applyPreviousCommand();
+			break;
+			case 40: // down
+				this.applyNextCommand();
+			break;
+		}
 	}
 }

@@ -1,0 +1,21 @@
+<div class="log">
+	<div *ngFor="#command of commands">
+		{{command}}
+	</div>
+</div>
+<form
+	(submit)="inputCommand($event)"
+	[ngFormModel]="commandPrompt"
+	>
+	<label>
+		&gt;
+		<input
+			#command
+			(keydown)="onKeyDown($event, command)"
+			[(ngModel)]="currentCommand"
+			ngControl="command"
+			placeholder=""
+			type="text"
+		/>
+	</label>
+</form>
