@@ -9,12 +9,12 @@ import {bootstrap} from 'angular2/platform/browser';
 import {AppComponent} from './app.component.ts'
 
 document.addEventListener('DOMContentLoaded', () => {
-  if (window.self === window.top) {
-    bootstrap(<Type>AppComponent, [
-      FORM_PROVIDERS,
-      HTTP_PROVIDERS,
-      ROUTER_PROVIDERS
-    ]);
-  }
+	if (window.self === window.top) {
+		bootstrap(<Type>AppComponent, [
+				FORM_PROVIDERS,
+				HTTP_PROVIDERS,
+				ROUTER_PROVIDERS
+		]);
+	}
 });
 

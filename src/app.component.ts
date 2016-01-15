@@ -12,4 +12,5 @@ import {ConsoleComponent} from './app/console.component.ts';
 			<console></console>
 			`
 })
-export class AppComponent { }
+export class AppComponent {
+}

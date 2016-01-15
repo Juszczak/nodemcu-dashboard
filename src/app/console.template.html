@@ -1,18 +1,54 @@
+<style>
+	.log {
+		padding-left: 15px;
+		line-height: 16px;
+	}
+	.command-record,
+	.command-input {
+		font-family: monospace;
+		font-size: 12px;
+	}
+	.command-label {
+		display: flex;
+		width: 100%;
+	}
+	.command-prompt {
+		width: 15px;
+	}
+	.command-input {
+		border: none;
+		display: block;
+		margin: 0;
+		outline: none;
+		padding: 0;
+		width: 100%;
+		line-height: 15px;
+	}
+</style>
 <div class="log">
-	<div *ngFor="#command of commands">
+	<div
+		class="command-record"
+		*ngFor="#command of commands">
 		{{command}}
 	</div>
 </div>
 <form
+	class="command-form"
 	(submit)="inputCommand($event)"
 	[ngFormModel]="commandPrompt"
 	>
-	<label>
-		&gt;
+	<label
+		class="command-label"
+		>
+		<span class="command-prompt">
+			&gt;&nbsp;
+		</span>
 		<input
 			#command
+			(input)="command"
 			(keydown)="onKeyDown($event, command)"
 			[(ngModel)]="currentCommand"
+			class="command-input"
 			ngControl="command"
 			placeholder=""
 			type="text"
