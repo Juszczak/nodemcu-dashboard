@@ -7,6 +7,11 @@ import {ConsoleComponent} from './app/console.component.ts';
 			ConsoleComponent
 		],
 		selector: 'app',
+		styles: [`
+			:host {
+				font-family: monospace;
+			}
+		`],
 		template: `
 			hello nodemcu
 			<console></console>
