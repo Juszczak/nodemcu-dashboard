@@ -1,4 +1,7 @@
-import {Component} from 'angular2/core';
+import {
+	Component,
+	NgZone
+} from 'angular2/core';
 
 import {ConsoleComponent} from './app/console.component.ts';
 

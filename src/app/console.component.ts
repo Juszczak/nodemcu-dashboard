@@ -4,9 +4,10 @@ import {
 	Component,
 	ElementRef,
 	EventEmitter,
+	NgZone,
 	Output,
-	ViewChild,
-	QueryList
+	QueryList,
+	ViewChild
 } from 'angular2/core';
 
 import {
@@ -14,6 +15,10 @@ import {
 	FormBuilder,
 	Validators
 } from 'angular2/common';
+
+import {
+	SocketService
+} from './socket.service.ts'
 
 import Immutable = require('immutable');
 
@@ -29,25 +34,29 @@ export class ConsoleComponent implements AfterViewInit {
 	private commandPrompt: ControlGroup;
 	private commands: Immutable.List<string> = Immutable.List<string>();
 	private currentCommand: string = "";
+	private socket: SocketService;
+	private zone: NgZone;
 	@ViewChild('command') private commandInput: ElementRef;
 
-	constructor(formBuilder: FormBuilder) {
+	constructor(formBuilder: FormBuilder, zone: NgZone) {
 		this.commandPrompt = formBuilder.group({
 			command: ["", Validators.required]
 		});
+		this.zone = zone;
+		console.info(zone);
 	}
 
 	ngAfterViewInit() {
-		console.info(this.commandInput);
 		this.commandInput.nativeElement.focus();
+		this.socket = new SocketService(this.zone);
+		this.socket.connect();
 	}
 
 	private getterCounter: number = 0;
 	private iterations: number = 0;
 
 	private sendCurrentCommand(): void {
-		// @todo
-		console.warn(this.currentCommand);
+		this.socket.send(this.currentCommand);
 	}
 
 	private inputCommand(event: Event): void {
