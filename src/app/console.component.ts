@@ -20,11 +20,24 @@ import {
 	SocketService
 } from './socket.service.ts'
 
+import {
+	LineModel
+} from './line.model.ts';
+
+import {
+	ConsoleModel
+} from './console.model.ts';
+
+import {
+	StatusComponent
+} from './console/status.component.ts';
+
 import Immutable = require('immutable');
 
 @Component({
 	changeDetection: ChangeDetectionStrategy.OnPush,
 	directives: [
+		StatusComponent
 	],
 	selector: 'console',
 	template: require('./console.template.html')
@@ -32,8 +45,9 @@ import Immutable = require('immutable');
 export class ConsoleComponent implements AfterViewInit {
 	@Output() private eventEmitter: EventEmitter<string> = new EventEmitter();
 	private commandPrompt: ControlGroup;
-	private commands: Immutable.List<string> = Immutable.List<string>();
-	private currentCommand: string = "";
+	private commands: ConsoleModel = new ConsoleModel();
+	private currentCommandString: string = "";
+	private currentCommand: LineModel;
 	private socket: SocketService;
 	private zone: NgZone;
 	@ViewChild('command') private commandInput: ElementRef;
@@ -43,7 +57,6 @@ export class ConsoleComponent implements AfterViewInit {
 			command: ["", Validators.required]
 		});
 		this.zone = zone;
-		console.info(zone);
 	}
 
 	ngAfterViewInit() {
@@ -52,34 +65,33 @@ export class ConsoleComponent implements AfterViewInit {
 		this.socket.connect();
 	}
 
-	private getterCounter: number = 0;
-	private iterations: number = 0;
-
 	private sendCurrentCommand(): void {
 		this.socket.send(this.currentCommand);
 	}
 
-	private inputCommand(event: Event): void {
+	private submitCommand(event: Event): void {
 		event.preventDefault();
 		let commandString: string = this.commandPrompt.value.command;
+		this.currentCommand = this.commands.new(commandString);
 		this.sendCurrentCommand();
-		this.commands = this.commands.push(commandString);
-		this.currentCommand = "";
+		this.currentCommandString = "";
 	}
 
 	private applyPreviousCommand(): void {
-		let currentCommandIndex: number = this.commands.indexOf(this.currentCommand);
-		if (currentCommandIndex < 0) {
-			currentCommandIndex = this.commands.size;
-		}
-		const previousCommand: string = this.commands.get(currentCommandIndex - 1);
-		this.currentCommand = previousCommand;
+		// @todo
+		// let currentCommandIndex: number = this.commands.indexOf(this.currentCommand);
+		// if (currentCommandIndex < 0) {
+		// 	currentCommandIndex = this.commands.size;
+		// }
+		// const previousCommand: string = this.commands.get(currentCommandIndex - 1);
+		// this.currentCommand = previousCommand;
 	}
 
 	private applyNextCommand(): void {
-		let currentCommandIndex: number = this.commands.indexOf(this.currentCommand);
-		const previousCommand: string = this.commands.get(currentCommandIndex + 1);
-		this.currentCommand = previousCommand;
+		// @todo
+		// let currentCommandIndex: number = this.commands.indexOf(this.currentCommand);
+		// const previousCommand: string = this.commands.get(currentCommandIndex + 1);
+		// this.currentCommand = previousCommand;
 	}
 
 	private onKeyDown(event: KeyboardEvent, input: HTMLInputElement): void {

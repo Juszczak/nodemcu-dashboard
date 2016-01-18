@@ -28,13 +28,15 @@
 <div class="log">
 	<div
 		class="command-record"
-		*ngFor="#command of commands">
-		{{command}}
+		*ngFor="#command of commands.get()">
+		{{command.text}}
+		<status type="command.status"></status>
+		{{command.status}}
 	</div>
 </div>
 <form
 	class="command-form"
-	(submit)="inputCommand($event)"
+	(submit)="submitCommand($event)"
 	[ngFormModel]="commandPrompt"
 	>
 	<label
@@ -47,7 +49,7 @@
 			#command
 			(input)="command"
 			(keydown)="onKeyDown($event, command)"
-			[(ngModel)]="currentCommand"
+			[(ngModel)]="currentCommandString"
 			class="command-input"
 			ngControl="command"
 			placeholder=""

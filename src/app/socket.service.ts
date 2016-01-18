@@ -6,6 +6,10 @@ import {
 	NgZone
 } from 'angular2/core';
 
+import {
+	LineModel
+} from './line.model.ts';
+
 @Injectable()
 export class SocketService {
 	private socket: WebSocket;
@@ -23,20 +27,33 @@ export class SocketService {
 		this.messageEmitter = new EventEmitter<string>();
 	}
 
-	public send(message: string): void {
-		this.socket.send(message);
+	public send(message: LineModel): void {
+		try {
+			this.socket.send(message.text);
+		} catch (exception) {
+			message.status = false;
+			console.group(`Not sent: ${message.text}`);
+			console.error('CODE:  ', (<DOMException>exception).code);
+			console.error('NAME:  ', (<DOMException>exception).name);
+			console.error('MESSAGE', (<DOMException>exception).message);
+			console.groupEnd();
+		}
 	}
 
 	public connect(): void {
-		this.socket = new WebSocket(SocketService.ESP8266_URL);
-		this.socket.onopen = (event: Event) => {
-			this.onSocketOpen(event);
-		};
-		this.socket.onmessage = (event: MessageEvent) => {
-			this.onSocketMessage(event);
-		}
-		this.socket.onclose = (event: CloseEvent) => {
-			window.clearInterval(this.pingInterval);
+		try {
+			this.socket = new WebSocket(SocketService.ESP8266_URL);
+			this.socket.onopen = (event: Event) => {
+				this.onSocketOpen(event);
+			};
+			this.socket.onmessage = (event: MessageEvent) => {
+				this.onSocketMessage(event);
+			}
+			this.socket.onclose = (event: CloseEvent) => {
+				window.clearInterval(this.pingInterval);
+			}
+		} catch (error) {
+			console.info('catched', error);
 		}
 	}
 
@@ -54,8 +71,8 @@ export class SocketService {
 	}
 
 	private ping(): void {
-		this.ledState = ((this.ledState + 1) % 2);
-		this.send(`=gpio.write(4, ${this.ledState})`);
+		// this.ledState = ((this.ledState + 1) % 2);
+		// this.send(`=gpio.write(4, ${this.ledState})`);
 	}
 
 	public startPinging(): void {
