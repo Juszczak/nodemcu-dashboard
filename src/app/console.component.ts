@@ -40,6 +40,7 @@ export class ConsoleComponent implements AfterViewInit {
 	private currentCommand: LineModel;
 	private socket: SocketService;
 	private zone: NgZone;
+	private commandIndex: number = 0;
 	@ViewChild('command') private commandInput: ElementRef;
 
 	constructor(formBuilder: FormBuilder, zone: NgZone) {
@@ -62,6 +63,7 @@ export class ConsoleComponent implements AfterViewInit {
 		this.socket.send(this.currentCommand);
 		this.appendLine(this.currentCommand);
 		this.currentCommandString = "";
+		this.commandIndex = 0;
 	}
 
 	private processIncommingMessage(line: LineModel): void {
@@ -83,20 +85,43 @@ export class ConsoleComponent implements AfterViewInit {
 	}
 
 	private applyPreviousCommand(): void {
-		// @todo
-		// let currentCommandIndex: number = this.commands.indexOf(this.currentCommand);
-		// if (currentCommandIndex < 0) {
-		// 	currentCommandIndex = this.commands.size;
-		// }
-		// const previousCommand: string = this.commands.get(currentCommandIndex - 1);
-		// this.currentCommand = previousCommand;
+		if (this.commands.size === 0) {
+			return;
+		}
+
+		const previousCommands: Immutable.List<LineModel> = this.commands.filter(line => {
+			return !line.incomming;
+		}).toList();
+
+		const index: number = previousCommands.size - 1 - this.commandIndex;
+		if (index < 1) {
+			this.currentCommandString = previousCommands.get(0).text;
+		} else {
+			this.currentCommandString = previousCommands.get(index).text;
+			this.commandIndex += 1;
+		}
+		this.commandInput.nativeElement.focus();
 	}
 
 	private applyNextCommand(): void {
-		// @todo
-		// let currentCommandIndex: number = this.commands.indexOf(this.currentCommand);
-		// const previousCommand: string = this.commands.get(currentCommandIndex + 1);
-		// this.currentCommand = previousCommand;
+		if (this.commands.size === 0) {
+			return;
+		}
+
+		const previousCommands: Immutable.List<LineModel> = this.commands.filter(line => {
+			return !line.incomming;
+		}).toList();
+
+		this.commandIndex -= 1;
+
+		const index: number = previousCommands.size - 1 - this.commandIndex;
+
+		if (index > previousCommands.size - 1) {
+			this.currentCommandString = '';
+			this.commandIndex = 0;
+		} else {
+			this.currentCommandString = previousCommands.get(index).text;
+		}
 	}
 
 	private onKeyDown(event: KeyboardEvent, input: HTMLInputElement): void {
@@ -107,17 +132,23 @@ export class ConsoleComponent implements AfterViewInit {
 				event.preventDefault();
 			break;
 			case 38: // up
+				event.preventDefault();
 				this.applyPreviousCommand();
 			break;
 			case 40: // down
+				event.preventDefault();
 				this.applyNextCommand();
+			break;
+			default:
+				this.commandIndex = 0;
 			break;
 		}
 	}
 
 	private resendCommand(event: MouseEvent, command: LineModel): void {
-		this.currentCommand = command;
+		this.currentCommand = new LineModel(command.text);
 		this.sendCurrentCommand();
+		this.commandInput.nativeElement.focus();
 	}
 
 	private editLine(event: MouseEvent, command: LineModel): void {
