@@ -1,18 +1,50 @@
 <style>
 	.log {
-		padding-left: 15px;
 		line-height: 15px;
+		box-sizing: border-box;
+		color: #424242;
 	}
-	.command-record,
+	.line,
 	.command-input {
+		width: 100%;
 		font-family: monospace;
 		font-size: 12px;
+		box-sizing: border-box;
+		background: #eee;
+	}
+	.line {
+		padding-left: 15px;
+		box-sizing: border-box;
+		cursor: pointer;
+		position: relative;
+	}
+	.line .actions {
+		position: absolute;
+		right: 10px;
+		top: 0;
+		visibility: hidden;
+	}
+	.line:hover .actions {
+		visibility: visible;
+	}
+	.line.incomming {
+		background: #f5f5f5;
+	}
+	.line.incomming:hover {
+		background: #efa843;
+	}
+	.line:hover {
+		background: #3fb476;
+	}
+	.line .record {
+		display: inline-block;
 	}
 	.command-label {
 		display: flex;
 		width: 100%;
 	}
 	.command-prompt {
+		background: #eee;
 		width: 15px;
 	}
 	.command-input {
@@ -27,9 +59,18 @@
 </style>
 <div class="log">
 	<div
-		class="command-record"
+		class="line"
+		[ngClass]="{
+			'incomming': command.incomming
+		}"
 		*ngFor="#command of commands">
-		{{command.text}}
+		<div class="record">
+			{{command.text}}
+		</div>
+		<div class="actions">
+			<a *ngIf="!command.incomming" class="resend">resend</a>
+			<a class="copy">copy</a>
+		</div>
 	</div>
 </div>
 <form

@@ -41,13 +41,13 @@ export class SocketService {
 		try {
 			this.socket = new WebSocket(SocketService.ESP8266_URL);
 			this.socket.onopen = (event: Event) => {
-				this.messageEmitter.emit(new LineModel(`connected to ${this.socket.url}`));
+				this.messageEmitter.emit(new LineModel(`connected to ${this.socket.url}`, true));
 			};
 			this.socket.onmessage = (event: MessageEvent) => {
 				this.onSocketMessage(event);
 			}
 			this.socket.onclose = (event: CloseEvent) => {
-				this.messageEmitter.emit(new LineModel(`disconnected`));
+				this.messageEmitter.emit(new LineModel(`disconnected`, true));
 			}
 		} catch (error) {
 			console.info('catched', error);
