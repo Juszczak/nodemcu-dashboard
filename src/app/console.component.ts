@@ -60,6 +60,8 @@ export class ConsoleComponent implements AfterViewInit {
 
 	private sendCurrentCommand(): void {
 		this.socket.send(this.currentCommand);
+		this.appendLine(this.currentCommand);
+		this.currentCommandString = "";
 	}
 
 	private processIncommingMessage(line: LineModel): void {
@@ -77,9 +79,7 @@ export class ConsoleComponent implements AfterViewInit {
 		event.preventDefault();
 		let commandString: string = this.commandPrompt.value.command;
 		this.currentCommand = new LineModel(commandString);
-		this.appendLine(this.currentCommand);
 		this.sendCurrentCommand();
-		this.currentCommandString = "";
 	}
 
 	private applyPreviousCommand(): void {
@@ -113,5 +113,15 @@ export class ConsoleComponent implements AfterViewInit {
 				this.applyNextCommand();
 			break;
 		}
+	}
+
+	private resendCommand(event: MouseEvent, command: LineModel): void {
+		this.currentCommand = command;
+		this.sendCurrentCommand();
+	}
+
+	private editLine(event: MouseEvent, command: LineModel): void {
+		this.currentCommandString = command.text;
+		this.commandInput.nativeElement.focus();
 	}
 }

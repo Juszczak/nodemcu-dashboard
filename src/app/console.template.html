@@ -15,7 +15,6 @@
 	.line {
 		padding-left: 15px;
 		box-sizing: border-box;
-		cursor: pointer;
 		position: relative;
 	}
 	.line .actions {
@@ -23,6 +22,12 @@
 		right: 10px;
 		top: 0;
 		visibility: hidden;
+	}
+	.line .actions > * {
+		cursor: pointer;
+	}
+	.line .actions > *:hover {
+		color: #fff;
 	}
 	.line:hover .actions {
 		visibility: visible;
@@ -68,8 +73,18 @@
 			{{command.text}}
 		</div>
 		<div class="actions">
-			<a *ngIf="!command.incomming" class="resend">resend</a>
-			<a class="copy">copy</a>
+			<a
+				*ngIf="!command.incomming"
+				(click)="resendCommand($event, command)"
+				class="resend">
+				resend
+			</a>
+			<a
+				*ngIf="!command.incomming"
+				(click)="editLine($event, command)"
+				class="edit">
+				edit
+			</a>
 		</div>
 	</div>
 </div>
