@@ -28,10 +28,8 @@
 <div class="log">
 	<div
 		class="command-record"
-		*ngFor="#command of commands.get()">
+		*ngFor="#command of commands">
 		{{command.text}}
-		<status type="command.status"></status>
-		{{command.status}}
 	</div>
 </div>
 <form

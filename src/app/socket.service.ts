@@ -12,19 +12,16 @@ import {
 
 @Injectable()
 export class SocketService {
-	private socket: WebSocket;
-	private zone: NgZone;
+	public messageEmitter: EventEmitter<LineModel>;
 
 	static ESP8266_URL: string = 'ws://192.168.1.6/esp8266';
 
-	private pingInterval: number;
-	private ledState: number = 0;
-
-	private messageEmitter: EventEmitter<string>;
+	private socket: WebSocket;
+	private zone: NgZone;
 
 	constructor(zone: NgZone) {
 		this.zone = zone;
-		this.messageEmitter = new EventEmitter<string>();
+		this.messageEmitter = new EventEmitter<LineModel>();
 	}
 
 	public send(message: LineModel): void {
@@ -44,13 +41,13 @@ export class SocketService {
 		try {
 			this.socket = new WebSocket(SocketService.ESP8266_URL);
 			this.socket.onopen = (event: Event) => {
-				this.onSocketOpen(event);
+				this.messageEmitter.emit(new LineModel(`connected to ${this.socket.url}`));
 			};
 			this.socket.onmessage = (event: MessageEvent) => {
 				this.onSocketMessage(event);
 			}
 			this.socket.onclose = (event: CloseEvent) => {
-				window.clearInterval(this.pingInterval);
+				this.messageEmitter.emit(new LineModel(`disconnected`));
 			}
 		} catch (error) {
 			console.info('catched', error);
@@ -62,22 +59,6 @@ export class SocketService {
 	}
 
 	private onSocketMessage(event: MessageEvent): void {
-		console.info(`event.data:`, event.data);
-		// this.messageEmitter.emit(event.data);
-	}
-
-	private onSocketOpen(event: Event): void {
-		// this.startPinging();
-	}
-
-	private ping(): void {
-		// this.ledState = ((this.ledState + 1) % 2);
-		// this.send(`=gpio.write(4, ${this.ledState})`);
-	}
-
-	public startPinging(): void {
-		this.pingInterval = setInterval(() => {
-			this.ping();
-		}, 1000);
+		this.messageEmitter.emit(new LineModel(event.data, true));
 	}
 }

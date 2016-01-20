@@ -24,20 +24,10 @@ import {
 	LineModel
 } from './line.model.ts';
 
-import {
-	ConsoleModel
-} from './console.model.ts';
-
-import {
-	StatusComponent
-} from './console/status.component.ts';
-
 import Immutable = require('immutable');
 
 @Component({
-	changeDetection: ChangeDetectionStrategy.OnPush,
 	directives: [
-		StatusComponent
 	],
 	selector: 'console',
 	template: require('./console.template.html')
@@ -45,7 +35,7 @@ import Immutable = require('immutable');
 export class ConsoleComponent implements AfterViewInit {
 	@Output() private eventEmitter: EventEmitter<string> = new EventEmitter();
 	private commandPrompt: ControlGroup;
-	private commands: ConsoleModel = new ConsoleModel();
+	private commands: Immutable.List<LineModel> = Immutable.List<LineModel>();
 	private currentCommandString: string = "";
 	private currentCommand: LineModel;
 	private socket: SocketService;
@@ -63,16 +53,30 @@ export class ConsoleComponent implements AfterViewInit {
 		this.commandInput.nativeElement.focus();
 		this.socket = new SocketService(this.zone);
 		this.socket.connect();
+		this.socket.messageEmitter.subscribe((line: LineModel) => {
+			this.processIncommingMessage(line);
+		})
 	}
 
 	private sendCurrentCommand(): void {
 		this.socket.send(this.currentCommand);
 	}
 
+	private processIncommingMessage(line: LineModel): void {
+		const isJustPrompt = new RegExp('> ').test(line.text);
+		if (!isJustPrompt) {
+			this.appendLine(line);
+		}	}
+
+	private appendLine(line: LineModel): void {
+		this.commands = this.commands.push(line);
+	}
+
 	private submitCommand(event: Event): void {
 		event.preventDefault();
 		let commandString: string = this.commandPrompt.value.command;
-		this.currentCommand = this.commands.new(commandString);
+		this.currentCommand = new LineModel(commandString);
+		this.appendLine(this.currentCommand);
 		this.sendCurrentCommand();
 		this.currentCommandString = "";
 	}
