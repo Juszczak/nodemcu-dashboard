@@ -63,8 +63,9 @@ export class ConsoleComponent implements AfterViewInit {
 	}
 
 	private processIncommingMessage(line: LineModel): void {
-		const isJustPrompt = new RegExp('> ').test(line.text);
-		if (!isJustPrompt) {
+		const isPrompt: boolean = new RegExp('> ').test(line.text);
+		const isWhitespace: boolean = new RegExp('(\s)|(\t)|(\n)').test(line.text);
+		if (!isPrompt && !isWhitespace) {
 			this.appendLine(line);
 		}	}
 
