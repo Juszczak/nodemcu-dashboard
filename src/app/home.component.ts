@@ -6,7 +6,7 @@ import {
 	directives: [
 	],
 	selector: 'home',
-	template: `hello from home component`
+	template: `<div>hello from home component</div>`
 })
 export class HomeComponent {
 }

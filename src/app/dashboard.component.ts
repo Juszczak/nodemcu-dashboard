@@ -6,7 +6,7 @@ import {
 	directives: [
 	],
 	selector: 'dashboard',
-	template: `hello from dashboard component`
+	template: `<div>hello from dashboard component</div>`
 })
 export class DashboardComponent {
 }
