@@ -5,12 +5,14 @@
   "main": "index.js",
   "scripts": {
     "start": "cp ./src/index.html ./dist/index.html; webpack --watch",
+    "serve": "node ./server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "live-server": "^0.9.1",
     "raw-loader": "^0.5.1",
     "ts-loader": "^0.7.2",
     "typescript": "^1.7.5",
