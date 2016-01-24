@@ -6,7 +6,7 @@ import {ROUTER_PROVIDERS} from 'angular2/router';
 import {Type} from 'angular2/core';
 import {bootstrap} from 'angular2/platform/browser';
 
-import {AppComponent} from './app.component.ts'
+import {AppComponent} from './app/app.component.ts'
 
 document.addEventListener('DOMContentLoaded', () => {
 	if (window.self === window.top) {

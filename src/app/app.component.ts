@@ -11,9 +11,9 @@ import {
 } from 'angular2/router';
 
 
-import {ConsoleComponent} from './app/console.component.ts';
-import {DashboardComponent} from './app/dashboard.component.ts';
-import {HomeComponent} from './app/home.component.ts';
+import {ConsoleComponent} from './console/console.component.ts';
+import {DashboardComponent} from './dashboard/dashboard.component.ts';
+import {HomeComponent} from './home/home.component.ts';
 
 @Component({
 		directives: [

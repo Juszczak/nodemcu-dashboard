@@ -18,11 +18,11 @@ import {
 
 import {
 	SocketService
-} from './socket.service.ts'
+} from '../services/socket.service.ts'
 
 import {
 	LineModel
-} from './line.model.ts';
+} from '../models/line.model.ts';
 
 import Immutable = require('immutable');
 

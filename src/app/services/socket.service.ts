@@ -8,7 +8,7 @@ import {
 
 import {
 	LineModel
-} from './line.model.ts';
+} from '../models/line.model.ts';
 
 @Injectable()
 export class SocketService {
