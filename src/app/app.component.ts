@@ -10,37 +10,27 @@ import {
 	Location
 } from 'angular2/router';
 
+import {NavComponent} from './nav/nav.component.ts';
 
 import {ConsoleComponent} from './console/console.component.ts';
 import {DashboardComponent} from './dashboard/dashboard.component.ts';
 import {HomeComponent} from './home/home.component.ts';
 
 @Component({
-		directives: [
-			ConsoleComponent,
-			DashboardComponent,
-			HomeComponent,
-			ROUTER_DIRECTIVES,
-		],
-		selector: 'app',
-		styles: [`
-			:host {
-				font-family: monospace;
-			}
-		`],
-		template: `
-			<style>
-				.navigation {
-					margin: 0 0 10px 0
-				}
-			</style>
-			<nav class="navigation">
-				<a [routerLink]="['/Home']">home</a>
-				<a [routerLink]="['/Console']">console</a>
-				<a [routerLink]="['/Dashboard']">dashboard</a>
-			</nav>
-			<router-outlet></router-outlet>
-			`
+	directives: [
+		ConsoleComponent,
+		DashboardComponent,
+		HomeComponent,
+		NavComponent,
+		ROUTER_DIRECTIVES,
+	],
+	selector: 'app',
+	styles: [`
+		:host {
+			font-family: monospace;
+		}
+	`],
+	template: require('./app.template.html')
 })
 @RouteConfig([
   { path: '/', component: HomeComponent, name: 'Home' },
