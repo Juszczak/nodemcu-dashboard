@@ -7,7 +7,15 @@ module.exports = {
 		filename: "dashboard.js"
 	},
 	resolve: {
-		extensions: ['', '.ts', '.js', '.json', '.css', '.html']
+		extensions: [
+			'',
+			'.ts',
+			'.js',
+			'.json',
+			'.css',
+			'.html',
+			'.styl'
+		]
 	},
 	devtool: 'source-map',
 	module: {
@@ -18,6 +26,9 @@ module.exports = {
 			}, {
 				test: /\.html$/,
 				loader: 'raw-loader'
+			}, {
+				test: /\.styl$/,
+				loader: 'raw-loader!postcss-loader!stylus-loader'
 			}
 		]
 	}

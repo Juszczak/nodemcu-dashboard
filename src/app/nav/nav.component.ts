@@ -16,6 +16,7 @@ import {
 		ROUTER_DIRECTIVES
 	],
 	selector: 'nav[navigation]',
+	styles: [require('./nav.styles.styl')],
 	template: require('./nav.template.html')
 })
 export class NavComponent {

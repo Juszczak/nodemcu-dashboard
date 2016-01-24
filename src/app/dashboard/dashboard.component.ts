@@ -6,6 +6,7 @@ import {
 	directives: [
 	],
 	selector: 'dashboard',
+	styles: [require('./dashboard.styles.styl')],
 	template: require('./dashboard.template.html')
 })
 export class DashboardComponent {

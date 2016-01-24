@@ -1,0 +1,62 @@
+.log {
+	line-height: 15px;
+	box-sizing: border-box;
+	color: #424242;
+}
+.line,
+.command-input {
+	width: 100%;
+	font-family: monospace;
+	font-size: 12px;
+	box-sizing: border-box;
+	background: #eee;
+}
+.line {
+	padding-left: 15px;
+	box-sizing: border-box;
+	position: relative;
+}
+.line .actions {
+	position: absolute;
+	right: 10px;
+	top: 0;
+	visibility: hidden;
+}
+.line .actions > * {
+	cursor: pointer;
+}
+.line .actions > *:hover {
+	color: #fff;
+}
+.line:hover .actions {
+	visibility: visible;
+}
+.line.incomming {
+	background: #f5f5f5;
+}
+.line.incomming:hover {
+	background: #efa843;
+}
+.line:hover {
+	background: #3fb476;
+}
+.line .record {
+	display: inline-block;
+}
+.command-label {
+	display: flex;
+	width: 100%;
+}
+.command-prompt {
+	background: #eee;
+	width: 15px;
+}
+.command-input {
+	border: none;
+	display: block;
+	margin: 0;
+	outline: none;
+	padding: 0;
+	width: 100%;
+	line-height: 15px;
+}

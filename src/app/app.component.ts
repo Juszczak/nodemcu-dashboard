@@ -25,11 +25,7 @@ import {HomeComponent} from './home/home.component.ts';
 		ROUTER_DIRECTIVES,
 	],
 	selector: 'app',
-	styles: [`
-		:host {
-			font-family: monospace;
-		}
-	`],
+	styles: [require('./app.styles.styl')],
 	template: require('./app.template.html')
 })
 @RouteConfig([

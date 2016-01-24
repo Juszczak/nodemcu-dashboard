@@ -30,6 +30,7 @@ import Immutable = require('immutable');
 	directives: [
 	],
 	selector: 'console',
+	styles: [require('./console.styles.styl')],
 	template: require('./console.template.html')
 })
 export class ConsoleComponent implements AfterViewInit {
