@@ -6,7 +6,7 @@ import {
 	directives: [
 	],
 	selector: 'home',
-	template: `<div>hello from home component</div>`
+	template: require('./home.template.html')
 })
 export class HomeComponent {
 }

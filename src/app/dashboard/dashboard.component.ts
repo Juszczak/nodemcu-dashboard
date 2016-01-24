@@ -6,7 +6,7 @@ import {
 	directives: [
 	],
 	selector: 'dashboard',
-	template: `<div>hello from dashboard component</div>`
+	template: require('./dashboard.template.html')
 })
 export class DashboardComponent {
 }
