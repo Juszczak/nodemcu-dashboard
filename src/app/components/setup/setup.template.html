@@ -1,0 +1,86 @@
+<div class="status">
+	{{status}}
+</div>
+
+<div class="devices">
+	<table class="list">
+		<thead>
+			<tr>
+				<td></td>
+				<td>name</td>
+				<td>model</td>
+				<td class="actions">actions</td>
+			</tr>
+		</thead>
+		<tbody>
+			<tr
+				class="device"
+				*ngFor="#device of devices"
+				[ngClass]="{
+					'selected': isSelected(device)
+					}">
+				<td>
+					<div class="connection">
+						<div
+							class="status status--{{device.connected}}"
+						></div>
+					</div>
+				</td>
+				<td>{{device.name}}</td>
+				<td>{{device.model}}</td>
+				<td class="actions">
+					<a *ngIf="device.connected"
+						class="console">
+						console
+					</a>
+					<a *ngIf="!device.connected"
+						class="connect">
+						connect
+					</a>
+					<a *ngIf="device.connected"
+						class="disconnect">
+						disconnect
+					</a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<button
+		(click)="openEmptyEditor($event)"
+		class="add">
+		+
+	</button>
+	<form
+		*ngIf="editorVisible"
+		(submit)="saveDevice($event)"
+		[ngFormModel]="editDeviceForm"
+		class="edit-form">
+		<label class="field-label">
+			<span class="label-text">name</span>
+			<input #name
+				ngControl="name"
+				placeholder="type name&hellip;"
+				class="field"
+				type="text" />
+		</label>
+		<label class="field-label">
+			<span class="label-text">model</span>
+			<input #model
+				ngControl="model"
+				placeholder="type model&hellip;"
+				class="field"
+				type="text" />
+		</label>
+		<label class="field-label">
+			<span class="label-text">url</span>
+			<input #model
+				ngControl="url"
+				placeholder="type url&hellip;"
+				class="field"
+				type="url" />
+		</label>
+		<label class="field-label">
+			<button #save class="save">save</button>
+		</label>
+	</form>
+</div>
